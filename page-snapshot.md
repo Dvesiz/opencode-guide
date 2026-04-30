@@ -1,0 +1,242 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]: 
+    - heading "OpenCode 完整安装指南" [level=1] [ref=e6]
+    - paragraph [ref=e7]: 开源 AI 编程助手的完整安装与 VSCode 使用教程
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: 
+        - text: CLI 工具
+      - generic [ref=e11]:
+        - generic [ref=e12]: 
+        - text: VSCode 集成
+      - generic [ref=e13]: 完全免费
+    - link " 开始学习" [ref=e14] [cursor=pointer]:
+      - /url: "#tutorial"
+      - generic [ref=e15]: 
+      - text: 开始学习
+  - generic [ref=e17]:
+    - generic [ref=e18]:
+      - heading "什么是 OpenCode？" [level=2] [ref=e19]
+      - paragraph [ref=e20]: 开源的 AI 编程助手，支持终端和 VSCode 集成
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: 
+            - heading "核心功能" [level=3] [ref=e25]
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - generic [ref=e28]: 
+              - generic [ref=e29]: 在终端（CLI）中直接对话写代码
+            - listitem [ref=e30]:
+              - generic [ref=e31]: 
+              - generic [ref=e32]: 在 VSCode 中辅助写代码
+            - listitem [ref=e33]:
+              - generic [ref=e34]: 
+              - generic [ref=e35]: 自动生成、重构、解释代码
+            - listitem [ref=e36]:
+              - generic [ref=e37]: 
+              - generic [ref=e38]: 不绑定平台、可自由扩展
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]: 
+            - heading "免费优势" [level=3] [ref=e42]
+          - list [ref=e43]:
+            - listitem [ref=e44]:
+              - generic [ref=e45]: 
+              - generic [ref=e46]: 有很多免费的大模型可以使用
+            - listitem [ref=e47]:
+              - generic [ref=e48]: 
+              - generic [ref=e49]: 不收费不排队
+            - listitem [ref=e50]:
+              - generic [ref=e51]: 
+              - generic [ref=e52]: 对开发者非常友好
+            - listitem [ref=e53]:
+              - generic [ref=e54]: 
+              - generic [ref=e55]: 开源社区支持
+    - generic [ref=e56]:
+      - heading "环境要求" [level=2] [ref=e57]
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - generic [ref=e60]: 
+          - strong [ref=e61]: 重要提示
+        - list [ref=e62]:
+          - listitem [ref=e63]:
+            - strong [ref=e64]: 操作系统：
+            - text: Windows 10 / Windows 11
+          - listitem [ref=e65]:
+            - strong [ref=e66]: 终端示例：
+            - text: PowerShell / CMD / VSCode Terminal
+          - listitem [ref=e67]:
+            - strong [ref=e68]: Node.js 要求：
+            - text: ≥ 18（强烈推荐 20 LTS）
+    - generic [ref=e69]:
+      - heading "安装步骤" [level=2] [ref=e70]
+      - generic [ref=e73]:
+        - generic [ref=e74]: "1"
+        - generic [ref=e75]:
+          - heading " 安装 Git" [level=3] [ref=e76]:
+            - generic [ref=e77]: 
+            - text: 安装 Git
+          - generic [ref=e78]:
+            - heading "为什么要安装 Git？" [level=4] [ref=e79]
+            - paragraph [ref=e80]: OpenCode 依赖 Git 环境，用于：
+            - list [ref=e81]:
+              - listitem [ref=e82]: 项目管理
+              - listitem [ref=e83]: 代码上下文分析
+              - listitem [ref=e84]: 工程结构识别
+          - generic [ref=e85]:
+            - heading "下载地址" [level=4] [ref=e86]
+            - paragraph [ref=e87]:
+              - text: 官方网站：
+              - link "https://git-scm.com/" [ref=e88] [cursor=pointer]:
+                - /url: https://git-scm.com/
+            - paragraph [ref=e89]: 点击首页的 Download for Windows 即可自动下载。
+          - generic [ref=e90]:
+            - heading "安装步骤（Windows）" [level=4] [ref=e91]
+            - list [ref=e92]:
+              - listitem [ref=e93]: 双击安装包
+              - listitem [ref=e94]: 一路 Next
+              - listitem [ref=e95]: 编辑器选择：已装 VSCode 👉 选 Use Visual Studio Code
+              - listitem [ref=e96]: PATH 选项：✅ Git from the command line and also from 3rd-party software
+              - listitem [ref=e97]: 其余全部默认
+              - listitem [ref=e98]: 点击 Install
+          - generic [ref=e99]:
+            - heading "验证安装" [level=4] [ref=e100]
+            - paragraph [ref=e101]: 打开命令提示符 / PowerShell，输入：
+            - generic [ref=e102]: git --version
+            - generic [ref=e103]:
+              - generic [ref=e104]: 
+              - text: 如果看到版本号输出，说明 Git 安装成功 ✅
+      - generic [ref=e106]:
+        - generic [ref=e107]: "2"
+        - generic [ref=e108]:
+          - heading " 安装 Node.js" [level=3] [ref=e109]:
+            - generic [ref=e110]: 
+            - text: 安装 Node.js
+          - generic [ref=e111]:
+            - heading "为什么必须安装 Node.js？" [level=4] [ref=e112]
+            - paragraph [ref=e113]: OpenCode 是基于 Node.js 开发的 CLI 工具：
+            - list [ref=e114]:
+              - listitem [ref=e115]: Node 版本过低 → 无法运行
+              - listitem [ref=e116]: 版本要求：大于 Node 20
+          - generic [ref=e117]:
+            - heading "下载地址" [level=4] [ref=e118]
+            - paragraph [ref=e119]:
+              - text: 官网：
+              - link "https://nodejs.org/" [ref=e120] [cursor=pointer]:
+                - /url: https://nodejs.org/
+            - generic [ref=e121]:
+              - generic [ref=e122]: 
+              - text: 请选择：✅ LTS（长期支持版） ❌ 不要选 Current（新手不推荐）
+          - generic [ref=e123]:
+            - heading "安装步骤（Windows）" [level=4] [ref=e124]
+            - list [ref=e125]:
+              - listitem [ref=e126]: 确保 Node 版本 ≥ 20
+              - listitem [ref=e127]: 双击 .msi 安装包
+              - listitem [ref=e128]: 一路 Next
+              - listitem [ref=e129]: 勾选：✅ Automatically install the necessary tools
+              - listitem [ref=e130]: 等待安装完成
+          - generic [ref=e131]:
+            - heading "验证安装" [level=4] [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]: 
+              - text: ⚠️ 一定要重新打开终端
+            - generic [ref=e135]:
+              - text: node -v
+              - text: npm -v
+            - generic [ref=e136]:
+              - generic [ref=e137]: 
+              - text: 确保 Node 版本 ≥ 20，说明 Node.js 和 npm 均安装成功 ✅
+      - generic [ref=e139]:
+        - generic [ref=e140]: "3"
+        - generic [ref=e141]:
+          - heading " 安装 OpenCode" [level=3] [ref=e142]:
+            - generic [ref=e143]: 
+            - text: 安装 OpenCode
+          - generic [ref=e144]:
+            - heading "管理员启动终端（Windows）" [level=4] [ref=e145]
+            - list [ref=e146]:
+              - listitem [ref=e147]: 按 Win + X
+              - listitem [ref=e148]: 选择 终端（管理员） 或 PowerShell（管理员）
+          - generic [ref=e149]:
+            - heading "使用 npm 全局安装 OpenCode" [level=4] [ref=e150]
+            - generic [ref=e151]: npm install -g opencode-ai
+            - paragraph [ref=e152]: 安装过程可能 1~3 分钟，请耐心等待。
+          - generic [ref=e153]:
+            - heading "验证安装" [level=4] [ref=e154]
+            - generic [ref=e155]: opencode --version
+            - generic [ref=e156]:
+              - generic [ref=e157]: 
+              - text: 如果能输出版本号，说明安装成功 🎉
+    - generic [ref=e158]:
+      - heading "使用方法" [level=2] [ref=e159]
+      - generic [ref=e160]:
+        - generic [ref=e161]:
+          - heading " 终端中使用（CLI）" [level=3] [ref=e162]:
+            - generic [ref=e163]: 
+            - text: 终端中使用（CLI）
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - heading "启动 OpenCode" [level=4] [ref=e166]
+              - paragraph [ref=e167]: 在任意目录打开终端，输入：
+              - generic [ref=e168]: opencode
+            - generic [ref=e169]:
+              - heading "常见用法" [level=4] [ref=e170]
+              - generic [ref=e171]:
+                - generic [ref=e172]:
+                  - strong [ref=e173]: 1. 切换模型
+                  - paragraph [ref=e174]: 按住 ctrl+P，选择 Switch model 可以进行模型切换。可以看到后面有 Free 的就是免费模型。
+                - generic [ref=e175]:
+                  - strong [ref=e176]: 2. Plan 和 Build 模式切换
+                  - paragraph [ref=e177]: 在交互页面，按住 tab 键就可以切换 Plan 和 Build 模式。
+                  - list [ref=e178]:
+                    - listitem [ref=e179]: • Plan 模式：不会修改文件，只能阅读和建议
+                    - listitem [ref=e180]: • Build 模式：可以进行文件和代码修改
+                - generic [ref=e181]:
+                  - strong [ref=e182]: 3. 退出 OpenCode
+                  - paragraph [ref=e183]: 输入 /exit 即可退出，输入 / 会弹出操作选项。
+        - generic [ref=e184]:
+          - heading " VSCode 中使用" [level=3] [ref=e185]:
+            - generic [ref=e186]: 
+            - text: VSCode 中使用
+          - generic [ref=e187]:
+            - generic [ref=e188]:
+              - heading "1. 安装插件" [level=4] [ref=e189]
+              - paragraph [ref=e190]: 在 VSCode 扩展商店中搜索并安装 OpenCode 插件。
+            - generic [ref=e191]:
+              - heading "2. 打开项目" [level=4] [ref=e192]
+              - paragraph [ref=e193]: 在 VSCode 中打开你的项目文件夹。
+            - generic [ref=e194]:
+              - heading "3. 启动 OpenCode" [level=4] [ref=e195]
+              - paragraph [ref=e196]: 在右上角可以看到 OpenCode 的 logo，点击即可启动。
+            - generic [ref=e197]:
+              - generic [ref=e198]: 
+              - text: 完成安装！开始享受 AI 编程助手带来的便利吧！
+    - generic [ref=e199]:
+      - heading "使用示例" [level=2] [ref=e200]
+      - generic [ref=e201]:
+        - heading "创建个人主页" [level=3] [ref=e202]
+        - generic [ref=e203]:
+          - paragraph [ref=e204]: 这里用 MiniMax M2.1 模型，项目简单直接使用了 Build 模式：
+          - generic [ref=e205]: 帮我创建一个精致的个人主页，HTML+CSS
+          - paragraph [ref=e206]: 点击两下 esc 就可以打断 AI 生成，可以看到个人主页已经创建完成。
+    - generic [ref=e207]:
+      - heading "开始你的 AI 编程之旅" [level=2] [ref=e208]
+      - paragraph [ref=e209]: OpenCode 让编程变得更简单、更高效
+      - generic [ref=e210]:
+        - link " 查看教程" [ref=e211] [cursor=pointer]:
+          - /url: "#tutorial"
+          - generic [ref=e212]: 
+          - text: 查看教程
+        - link " 访问项目" [ref=e213] [cursor=pointer]:
+          - /url: https://github.com/opencode-ai/opencode
+          - generic [ref=e214]: 
+          - text: 访问项目
+  - contentinfo [ref=e215]:
+    - generic [ref=e216]:
+      - paragraph [ref=e217]:
+        - text: 本教程基于 CSDN 博客文章制作 -
+        - link "查看原文" [ref=e218] [cursor=pointer]:
+          - /url: https://blog.csdn.net/Dvesiz/article/details/156538070
+      - paragraph [ref=e219]: OpenCode 是开源项目，感谢社区贡献者的努力 💙

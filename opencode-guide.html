@@ -1,0 +1,1047 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenCode 完整安装与 VSCode 使用指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Exo", sans-serif;
+        background-color: #fef7ed;
+        color: #334155;
+        line-height: 1.7;
+        letter-spacing: 0.01em;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        color: #0f172a;
+      }
+      .code-font {
+        font-family: "Roboto Mono", monospace;
+      }
+      .command-box {
+        font-family: "Roboto Mono", monospace;
+        background: #1a1a2e;
+        color: #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 80px 16px 40px;
+        margin: 16px 0;
+        font-size: 14px;
+        overflow-x: hidden;
+        border-left: 3px solid #f97316;
+        position: relative;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+      .command-box::before {
+        content: "1\A 2\A 3\A 4\A 5";
+        white-space: pre;
+        position: absolute;
+        left: 12px;
+        top: 16px;
+        color: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        line-height: inherit;
+      }
+      .step-card {
+        transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.04),
+          0 4px 16px rgba(0, 0, 0, 0.04),
+          0 8px 32px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        background: #ffffff;
+      }
+      .step-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.04),
+          0 8px 24px rgba(0, 0, 0, 0.06),
+          0 16px 48px rgba(0, 0, 0, 0.06);
+      }
+      .progress-line {
+        position: absolute;
+        left: 24px;
+        top: 60px;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, #f97316, #fdba74);
+        opacity: 0.3;
+      }
+      .progress-line::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -3px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #f97316;
+        animation: moveDown 4s ease-in-out infinite;
+      }
+      @keyframes moveDown {
+        0% {
+          top: 0;
+          opacity: 1;
+        }
+        100% {
+          top: 100%;
+          opacity: 0;
+        }
+      }
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(249, 115, 22, 0);
+        }
+      }
+      .step-number {
+        background: linear-gradient(135deg, #ea580c, #fb923c);
+        animation: pulse-glow 3s infinite;
+      }
+      .hero-gradient {
+        background:
+          radial-gradient(
+            circle at 50% 0%,
+            rgba(249, 115, 22, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 50%,
+            rgba(251, 146, 60, 0.05) 0%,
+            transparent 50%
+          ),
+          linear-gradient(135deg, #fef7ed 0%, #f5f0e8 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-gradient::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.4;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+      .feature-icon {
+        background: linear-gradient(135deg, #ea580c, #f97316, #fb923c, #fdba74);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.3));
+      }
+      .highlight-box {
+        background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        border-left: 4px solid #f97316;
+        padding: 16px 20px;
+        margin: 16px 0;
+        border-radius: 0 8px 8px 0;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        border-left-width: 4px;
+      }
+      .warning-box {
+        background: linear-gradient(135deg, #fffaf0, #fef3c7);
+        border-left: 4px solid #f59e0b;
+        padding: 16px 20px;
+        margin: 16px 0;
+        border-radius: 0 8px 8px 0;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        border-left-width: 4px;
+      }
+      .success-box {
+        background: linear-gradient(135deg, #f0fdf4, #d1fae5);
+        border-left: 4px solid #10b981;
+        padding: 16px 20px;
+        margin: 16px 0;
+        border-radius: 0 8px 8px 0;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        border-left-width: 4px;
+      }
+      .glass-meta {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-blur: 16px;
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      }
+      .hover-arrow-bounce:hover i.fa-arrow-down {
+        animation: arrow-bounce 1s infinite;
+      }
+      @keyframes arrow-bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(4px);
+        }
+      }
+      a.animated-link {
+        position: relative;
+        text-decoration: none;
+        color: #f97316;
+      }
+      a.animated-link::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 1px;
+        bottom: -2px;
+        left: 0;
+        background-color: #f97316;
+        transform-origin: bottom right;
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      a.animated-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+      /* Copy Button */
+      .copy-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.5);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-family: "Exo", sans-serif;
+        z-index: 2;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .copy-btn.copied {
+        background: rgba(16, 185, 129, 0.3);
+        border-color: rgba(16, 185, 129, 0.5);
+        color: #6ee7b7;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section
+      class="hero-gradient min-h-[90vh] flex items-center justify-center px-4 py-24"
+    >
+      <div class="max-w-6xl mx-auto text-center relative z-10">
+        <!-- Decorative Blob -->
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl -z-10 pointer-events-none"
+        ></div>
+
+        <div class="mb-8">
+          <i class="fas fa-robot text-6xl feature-icon mb-6"></i>
+        </div>
+        <h1
+          class="text-5xl md:text-7xl font-semibold mb-6 bg-gradient-to-r from-[#c2410c] via-[#f97316] to-[#fb923c] bg-clip-text text-transparent"
+          style="filter: drop-shadow(0 4px 24px rgba(249, 115, 22, 0.25))"
+        >
+          OpenCode 完整安装指南
+        </h1>
+        <p
+          class="text-xl md:text-2xl text-stone-600 mb-8 max-w-3xl mx-auto leading-relaxed"
+        >
+          开源 AI 编程助手的完整安装与 VSCode 使用教程
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <span
+            class="px-6 py-3 bg-amber-50 text-orange-700 rounded-full font-medium shadow-sm border border-orange-100"
+          >
+            <i class="fas fa-terminal mr-2"></i>CLI 工具
+          </span>
+          <span
+            class="px-6 py-3 bg-orange-50 text-orange-700 rounded-full font-medium shadow-sm border border-orange-100"
+          >
+            <i class="fas fa-code mr-2"></i>VSCode 集成
+          </span>
+          <span
+            class="px-6 py-3 bg-emerald-50 text-emerald-700 rounded-full font-medium shadow-sm border border-emerald-100"
+          >
+            完全免费
+          </span>
+        </div>
+        <a
+          href="#tutorial"
+          class="hover-arrow-bounce inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl ring-1 ring-orange-500/20 ring-offset-2 ring-offset-transparent"
+        >
+          <i class="fas fa-arrow-down mr-2"></i>
+          开始学习
+        </a>
+      </div>
+    </section>
+
+    <!-- Article Metadata Bar -->
+    <div class="max-w-4xl mx-auto px-4 -mt-12 mb-16 relative z-20">
+      <div
+        class="glass-meta rounded-2xl p-6 flex flex-wrap items-center justify-center gap-6 text-sm text-stone-500"
+      >
+        <span class="flex items-center"
+          ><i class="fas fa-user-edit text-orange-500 mr-2"></i>原创</span
+        >
+        <span class="flex items-center"
+          ><i class="fas fa-clock text-orange-500 mr-2"></i>2026-01-30
+          更新</span
+        >
+        <span class="flex items-center"
+          ><i class="fas fa-eye text-orange-500 mr-2"></i>2.2w 阅读</span
+        >
+        
+        <span class="flex flex-wrap gap-2">
+          <span
+            class="px-2 py-0.5 bg-amber-50/80 text-orange-600 rounded-md text-xs border border-orange-100/50"
+            >#vscode</span
+          >
+          <span
+            class="px-2 py-0.5 bg-amber-50/80 text-orange-600 rounded-md text-xs border border-orange-100/50"
+            >#AI编程</span
+          >
+          <span
+            class="px-2 py-0.5 bg-amber-50/80 text-orange-600 rounded-md text-xs border border-orange-100/50"
+            >#claude</span
+          >
+          <span
+            class="px-2 py-0.5 bg-amber-50/80 text-orange-600 rounded-md text-xs border border-orange-100/50"
+            >#github</span
+          >
+          <span
+            class="px-2 py-0.5 bg-amber-50/80 text-orange-600 rounded-md text-xs border border-orange-100/50"
+            >#opencode</span
+          >
+        </span>
+      </div>
+    </div>
+
+    <!-- Tutorial Content -->
+    <section id="tutorial" class="py-24 px-4 relative z-10">
+      <div class="max-w-4xl mx-auto">
+        <!-- Introduction -->
+        <div class="mb-16">
+          <h2 class="text-4xl font-semibold tracking-tight mb-4 text-center">
+            一、前言：什么是 OpenCode？为什么值得用？
+          </h2>
+          <p class="text-lg text-stone-600 text-center mb-8">
+            开源的 AI 编程助手，支持终端和 VSCode 集成
+          </p>
+
+          <!-- 1.1 OpenCode 简介 -->
+          <div class="mb-8">
+            <h3
+              class="text-xl font-semibold tracking-tight mb-3 text-orange-600"
+            >
+              1.1 OpenCode 简介
+            </h3>
+            <p class="text-stone-600 mb-3">
+              官网：<a
+                href="https://opencode.ai"
+                class="animated-link"
+                target="_blank"
+                >OpenCode | The open source AI coding agent</a
+              >
+            </p>
+            <p class="text-stone-600 mb-4">
+              OpenCode 是一个开源的 AI 编程助手，与 ClaudeCode CLI 类似，支持：
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+              <div class="bg-white rounded-2xl p-8 step-card">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-star text-orange-500 text-2xl mr-3"></i>
+                  <h3 class="text-xl font-semibold tracking-tight">核心功能</h3>
+                </div>
+                <ul class="space-y-3 text-stone-600">
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span
+                      >在终端（CLI）中直接对话写代码，与 ClaudeCode CLI
+                      类似</span
+                    >
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>在 VSCode 中辅助写代码</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>自动生成代码、重构代码、解释代码</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>不绑定平台、可自由扩展</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>对开发者非常友好</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>有很多免费的大模型可以使用，不收费不排队</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>开源社区支持</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="bg-white rounded-2xl p-8 step-card">
+                <div class="flex items-center mb-4">
+                  <i class="fas fa-gift text-orange-500 text-2xl mr-3"></i>
+                  <h3 class="text-xl font-semibold tracking-tight">免费优势</h3>
+                </div>
+                <ul class="space-y-3 text-stone-600">
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>有很多免费的大模型可以使用</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>不收费不排队</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>对开发者非常友好</span>
+                  </li>
+                  <li class="flex items-start">
+                    <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                    <span>开源社区支持</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 1.2 你能学到什么？ -->
+            <div class="bg-white rounded-xl p-8 shadow-lg step-card mb-12">
+              <div class="flex items-center mb-4">
+                <i
+                  class="fas fa-graduation-cap text-green-500 text-2xl mr-3"
+                ></i>
+                <h3 class="text-xl font-semibold tracking-tight">
+                  1.2 本教程你能学到什么？
+                </h3>
+              </div>
+              <p class="text-stone-600 mb-4">看完本文，你可以做到：</p>
+              <ul class="space-y-2 text-stone-600">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                  <span>从 0 安装 Git</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                  <span>安装 Node.js（OpenCode 必需）</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                  <span>一行命令安装 OpenCode</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                  <span>在终端中直接用 OpenCode 写代码</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                  <span>在 VSCode 中使用 OpenCode 辅助开发</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section Divider -->
+          <div class="flex justify-center items-center gap-2 mb-16 opacity-30">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+          </div>
+
+          <!-- Environment Requirements -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-semibold tracking-tight mb-8">
+              二、环境说明（很重要）
+            </h2>
+            <div class="highlight-box">
+              <div class="flex items-center mb-3">
+                <i class="fas fa-info-circle text-orange-600 mr-3"></i>
+                <strong class="text-lg">重要提示</strong>
+              </div>
+              <ul class="space-y-2">
+                <li><strong>操作系统：</strong>Windows 10 / Windows 11</li>
+                <li>
+                  <strong>终端示例：</strong>PowerShell / CMD / VSCode Terminal
+                </li>
+                <li><strong>Node.js 要求：</strong>≥ 18（强烈推荐 20 LTS）</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section Divider -->
+          <div class="flex justify-center items-center gap-2 mb-16 opacity-30">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+          </div>
+
+          <!-- Installation Steps -->
+          <div class="relative">
+            <h2 class="text-3xl font-semibold tracking-tight mb-12 text-center">
+              三、第一步：安装 Git
+            </h2>
+
+            <!-- Step 1: Git Installation -->
+            <div class="mb-12 relative">
+              <div class="progress-line"></div>
+              <div class="flex items-start">
+                <div
+                  class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-6 flex-shrink-0"
+                >
+                  1
+                </div>
+                <div class="bg-white rounded-2xl p-8 step-card flex-1">
+                  <h3
+                    class="text-2xl font-semibold tracking-tight mb-4 text-orange-600"
+                  >
+                    <i class="fas fa-code-branch mr-3"></i>安装 Git
+                  </h3>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      3.1 为什么要安装 Git？
+                    </h4>
+                    <p class="text-stone-600 mb-4">
+                      OpenCode 依赖 Git 环境，用于：
+                    </p>
+                    <ul
+                      class="list-disc list-inside space-y-2 text-stone-600 ml-4"
+                    >
+                      <li>项目管理</li>
+                      <li>代码上下文分析</li>
+                      <li>工程结构识别</li>
+                    </ul>
+                  </div>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      3.2 Git 下载地址
+                    </h4>
+                    <p class="text-stone-600 mb-3">
+                      👉 官方网站：<a
+                        href="https://git-scm.com/"
+                        class="animated-link"
+                        target="_blank"
+                        >https://git-scm.com/</a
+                      >
+                    </p>
+                    <p class="text-stone-600">
+                      点击首页的 Download for Windows 即可自动下载。
+                    </p>
+                  </div>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      3.3 Git 安装步骤（Windows）
+                    </h4>
+                    <ol
+                      class="list-decimal list-inside space-y-2 text-stone-600 ml-4"
+                    >
+                      <li>双击安装包</li>
+                      <li>一路 Next</li>
+                      <li>
+                        编辑器选择：已装 VSCode 👉 选 Use Visual Studio Code
+                      </li>
+                      <li>
+                        PATH 选项：✅ Git from the command line and also from
+                        3rd-party software
+                      </li>
+                      <li>其余全部默认</li>
+                      <li>点击 Install</li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      3.4 验证 Git 是否安装成功
+                    </h4>
+                    <p class="text-stone-600 mb-3">
+                      打开命令提示符 / PowerShell，输入：
+                    </p>
+                    <div class="command-box">git --version</div>
+                    <p class="copy-hint">运行项目并下载源码</p>
+                    <div class="success-box">
+                      <i class="fas fa-check-circle mr-2"></i>
+                      如果看到版本号输出，说明 Git 安装成功 ✅
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Node.js Installation -->
+            <div class="mb-12 relative">
+              <h2 class="text-2xl font-semibold mb-8 text-center">
+                四、第二步：安装 Node.js（必须）
+              </h2>
+              <div class="flex items-start">
+                <div
+                  class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-6 flex-shrink-0"
+                >
+                  2
+                </div>
+                <div class="bg-white rounded-2xl p-8 step-card flex-1">
+                  <h3
+                    class="text-2xl font-semibold tracking-tight mb-4 text-orange-600"
+                  >
+                    <i class="fab fa-node-js mr-3"></i>安装 Node.js
+                  </h3>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      4.1 为什么必须安装 Node.js？
+                    </h4>
+                    <p class="text-stone-600 mb-4">
+                      OpenCode 是基于 Node.js 开发的 CLI 工具：
+                    </p>
+                    <ul
+                      class="list-disc list-inside space-y-2 text-stone-600 ml-4"
+                    >
+                      <li>Node 版本过低 → 无法运行</li>
+                      <li>版本要求：大于 Node 20</li>
+                    </ul>
+                  </div>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      4.2 Node.js 下载地址
+                    </h4>
+                    <p class="text-stone-600 mb-3">
+                      👉 官网：<a
+                        href="https://nodejs.org/"
+                        class="animated-link"
+                        target="_blank"
+                        >nodejs官网</a
+                      >
+                    </p>
+                    <div class="warning-box">
+                      <i class="fas fa-exclamation-triangle mr-2"></i>
+                      请选择：✅ LTS（长期支持版） ❌ 不要选
+                      Current（新手不推荐）
+                    </div>
+                  </div>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      4.3 Node.js 安装步骤（Windows）
+                    </h4>
+                    <ol
+                      class="list-decimal list-inside space-y-2 text-stone-600 ml-4"
+                    >
+                      <li>确保 Node 版本 ≥ 20</li>
+                      <li>双击 .msi 安装包</li>
+                      <li>一路 Next</li>
+                      <li>
+                        勾选：✅ Automatically install the necessary tools
+                      </li>
+                      <li>等待安装完成</li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      4.4 验证 Node.js 安装
+                    </h4>
+                    <div class="warning-box">
+                      <i class="fas fa-exclamation-triangle mr-2"></i>
+                      ⚠️ 一定要重新打开终端
+                    </div>
+                    <div class="command-box">
+                      node -v<br />
+                      npm -v
+                    </div>
+                    <p class="copy-hint">运行项目并下载源码</p>
+                    <div class="success-box">
+                      <i class="fas fa-check-circle mr-2"></i>
+                      确保 Node 版本 ≥ 20，说明 Node.js 和 npm 均安装成功 ✅
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: OpenCode Installation -->
+            <div class="mb-12 relative">
+              <h2 class="text-2xl font-semibold mb-8 text-center">
+                五、第三步：安装 OpenCode（核心）
+              </h2>
+              <div class="flex items-start">
+                <div
+                  class="step-number w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-6 flex-shrink-0"
+                >
+                  3
+                </div>
+                <div class="bg-white rounded-2xl p-8 step-card flex-1">
+                  <h3
+                    class="text-2xl font-semibold tracking-tight mb-4 text-orange-600"
+                  >
+                    <i class="fas fa-robot mr-3"></i>安装 OpenCode
+                  </h3>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      5.1 管理员启动终端（Windows）
+                    </h4>
+                    <ol
+                      class="list-decimal list-inside space-y-2 text-stone-600 ml-4"
+                    >
+                      <li>按 Win + X</li>
+                      <li>选择 终端（管理员） 或 PowerShell（管理员）</li>
+                    </ol>
+                  </div>
+
+                  <div class="mb-6">
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      5.2 使用 npm 全局安装 OpenCode
+                    </h4>
+                    <div class="command-box">npm install -g opencode-ai</div>
+                    <p class="copy-hint">运行项目并下载源码</p>
+                    <p class="text-stone-600 mt-3">
+                      安装过程可能 1~3 分钟，请耐心等待。
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      5.3 验证 OpenCode 是否安装成功
+                    </h4>
+                    <div class="command-box">opencode --version</div>
+                    <p class="copy-hint">运行项目并下载源码</p>
+                    <div class="success-box">
+                      <i class="fas fa-check-circle mr-2"></i>
+                      如果能输出版本号，说明安装成功 🎉
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Divider -->
+          <div class="flex justify-center items-center gap-2 mb-16 opacity-30">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+          </div>
+
+          <!-- Usage Guide -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-semibold tracking-tight mb-8 text-center">
+              六、在终端中使用 OpenCode（CLI）
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+              <!-- CLI Usage -->
+              <div class="bg-white rounded-2xl p-8 step-card">
+                <h3
+                  class="text-2xl font-semibold tracking-tight mb-6 text-orange-600"
+                >
+                  <i class="fas fa-terminal mr-3"></i>终端中使用（CLI）
+                </h3>
+
+                <div class="space-y-6">
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      6.1 启动 OpenCode
+                    </h4>
+                    <p class="text-stone-600 mb-3">
+                      在任意目录打开终端，输入：
+                    </p>
+                    <div class="command-box">opencode</div>
+                    <p class="copy-hint">运行项目并下载源码</p>
+                  </div>
+
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      6.2 终端中常见用法示例
+                    </h4>
+                    <div class="space-y-4">
+                      <div class="highlight-box">
+                        <strong>1. 切换模型</strong>
+                        <p class="text-sm text-stone-600 mt-2">
+                          按住 ctrl+P，选择 Switch model
+                          可以进行模型切换。可以看到后面有 Free 的就是免费模型。
+                        </p>
+                      </div>
+                      <div class="highlight-box">
+                        <strong>2. Plan 和 Build 模式切换</strong>
+                        <p class="text-sm text-stone-600 mt-2">
+                          在交互页面，按住 tab 键就可以切换 Plan 和 Build 模式。
+                        </p>
+                        <ul class="text-sm text-stone-600 mt-2 space-y-1">
+                          <li>• Plan 模式：不会修改文件，只能阅读和建议</li>
+                          <li>• Build 模式：可以进行文件和代码修改</li>
+                        </ul>
+                      </div>
+                      <div class="highlight-box">
+                        <strong>3. 退出 OpenCode（6.3）</strong>
+                        <p class="text-sm text-stone-600 mt-2">
+                          和 Claude Code 类似，输入
+                          <code class="bg-gray-200 px-1 rounded">/exit</code>
+                          即可退出。
+                        </p>
+                        <p class="text-sm text-stone-600 mt-2">
+                          输入
+                          <code class="bg-gray-200 px-1 rounded">/</code>
+                          会弹出操作选项。
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- VSCode Integration -->
+              <div class="bg-white rounded-2xl p-8 step-card">
+                <h3
+                  class="text-2xl font-semibold tracking-tight mb-6 text-orange-600"
+                >
+                  <i class="fab fa-microsoft mr-3"></i>七、VSCode 中使用
+                </h3>
+
+                <div class="space-y-6">
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      7.1 安装插件
+                    </h4>
+                    <p class="text-stone-600">
+                      在 VSCode 扩展商店中搜索并安装 OpenCode 插件。
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 class="text-lg font-semibold tracking-tight mb-3">
+                      7.2 在 VSCode 中打开 OpenCode
+                    </h4>
+                    <p class="text-stone-600 mb-3">
+                      在 VSCode 中打开你的项目文件夹。
+                    </p>
+                    <p class="text-stone-600 mb-3">
+                      在右上角可以看到 OpenCode 的 logo，点击即可启动。
+                    </p>
+                  </div>
+
+                  <div class="success-box">
+                    <i class="fas fa-trophy mr-2"></i>
+                    完成安装！开始享受 AI 编程助手带来的便利吧！
+                  </div>
+                  <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+                    <p class="text-stone-500 text-sm">
+                      <i class="fas fa-heart text-red-400 mr-1"></i>
+                      完成安装 OpenCode！如果觉得有用请点个赞吧
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Divider -->
+          <div class="flex justify-center items-center gap-2 mb-16 opacity-30">
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+            <div class="w-1.5 h-1.5 rounded-full bg-stone-400"></div>
+          </div>
+
+          <!-- Example Usage -->
+          <div class="mb-16">
+            <h2 class="text-3xl font-semibold tracking-tight mb-8 text-center">
+              💡 实战演示：创建个人主页
+            </h2>
+            <div class="bg-white rounded-2xl p-8 step-card">
+              <h3 class="text-xl font-semibold tracking-tight mb-4">
+                创建个人主页
+              </h3>
+              <div class="space-y-4">
+                <p class="text-stone-600">
+                  这里用 MiniMax M2.1 模型，项目简单直接使用了 Build 模式：
+                </p>
+                <div class="command-box">
+                  帮我创建一个精致的个人主页，HTML+CSS
+                </div>
+                <p class="text-stone-600">
+                  点击两下 esc 就可以打断 AI
+                  生成，可以看到个人主页已经创建完成。
+                </p>
+                <div
+                  class="mt-6 rounded-xl overflow-hidden shadow-md border border-gray-200"
+                >
+                  <img
+                    src="https://objectstorageapi.ap-northeast-1.clawcloudrun.com/wm810645-yiyu/pic/111.png"
+                    alt="个人主页测试结果截图"
+                    class="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="text-center bg-gradient-to-r from-orange-600 to-orange-500 rounded-[2rem] p-16 text-white shadow-2xl relative overflow-hidden"
+          >
+            <!-- Abstract decorative element -->
+            <div
+              class="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"
+            ></div>
+            <div
+              class="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-900/20 rounded-full blur-3xl pointer-events-none"
+            ></div>
+
+            <h2
+              class="text-3xl font-semibold tracking-tight mb-4 relative z-10"
+            >
+              开始你的 AI 编程之旅
+            </h2>
+            <p class="text-xl mb-10 text-amber-100 relative z-10">
+              OpenCode 让编程变得更简单、更高效
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 relative z-10">
+              <a
+                href="https://blog.csdn.net/Dvesiz/article/details/156538070?spm=1001.2014.3001.5501"
+                target="_blank"
+                class="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-semibold rounded-xl hover:bg-stone-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
+              >
+                <i class="fas fa-book mr-2"></i>
+                查看完整教程(CSDN)
+              </a>
+              <a
+                href="https://github.com/opencode-ai/opencode"
+                target="_blank"
+                class="inline-flex items-center px-8 py-4 bg-orange-900/50 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-orange-900/70 border border-white/10 transition-all duration-300 hover:-translate-y-1"
+              >
+                <i class="fab fa-github mr-2"></i>
+                访问项目(OpenCode)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-white py-12 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="text-stone-400 mb-3">
+          版权声明：本文为 CSDN 博主「<strong class="text-white">Dvesiz</strong
+          >」的原创文章，遵循
+          <a
+            href="https://creativecommons.org/licenses/by-sa/4.0/"
+            class="text-orange-400 hover:underline"
+            target="_blank"
+            >CC 4.0 BY-SA</a
+          >
+          版权协议
+        </p>
+        <p class="text-stone-400 mb-3">
+          原文链接：
+          <a
+            href="https://blog.csdn.net/Dvesiz/article/details/156538070?spm=1001.2014.3001.5501"
+            class="text-orange-400 hover:underline"
+            target="_blank"
+          >
+            Dvesiz的CSDN博客
+          </a>
+        </p>
+        <p class="text-stone-500 text-sm mt-6">
+          OpenCode 是开源项目，感谢社区贡献者的努力 💙
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ===== Smooth Scrolling =====
+        document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          });
+        });
+
+        // ===== Scroll Animations =====
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+        );
+
+        document.querySelectorAll(".step-card").forEach(function (card) {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(20px)";
+          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+          observer.observe(card);
+        });
+
+        // ===== One-Click Copy Buttons =====
+        document.querySelectorAll(".command-box").forEach(function (box) {
+          // Prevent scroll wheel inside command boxes
+          box.addEventListener("wheel", function (e) {
+            e.preventDefault();
+          }, { passive: false });
+
+          var btn = document.createElement("button");
+          btn.className = "copy-btn";
+          btn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+          btn.addEventListener("click", function () {
+            var clone = box.cloneNode(true);
+            var cloneBtn = clone.querySelector(".copy-btn");
+            if (cloneBtn) cloneBtn.remove();
+            var text = clone.textContent || clone.innerText;
+            navigator.clipboard.writeText(text.trim()).then(function () {
+              btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+              btn.classList.add("copied");
+              setTimeout(function () {
+                btn.innerHTML = '<i class="fas fa-copy"></i> 复制';
+                btn.classList.remove("copied");
+              }, 1500);
+            });
+          });
+          box.appendChild(btn);
+        });
+      });
+    </script>
+  </body>
+</html>
